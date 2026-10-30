@@ -8,7 +8,7 @@ permissions:
 
 jobs:
   wheel:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, jerco-public, linode]
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4.4.0
         with:
@@ -34,14 +34,16 @@ jobs:
         env:
           UV_EXCLUDE_NEWER: 5 days
         run: |
-          uv venv --python 3.12 /tmp/strix-smoke
-          uv pip install --python /tmp/strix-smoke/bin/python dist/*.whl
-          /tmp/strix-smoke/bin/strix --version
-          /tmp/strix-smoke/bin/strix --help >/dev/null
+          uv venv --python 3.12 ${RUNNER_TEMP}/strix-smoke
+          uv pip install --python ${RUNNER_TEMP}/strix-smoke/bin/python dist/*.whl
+          ${RUNNER_TEMP}/strix-smoke/bin/strix --version
+          ${RUNNER_TEMP}/strix-smoke/bin/strix --help >/dev/null
       - name: Vertex AI and Bedrock dependencies install with the wheel
-        run: /tmp/strix-smoke/bin/python -c "import google.auth.transport.requests, boto3"
+        run: ${RUNNER_TEMP}/strix-smoke/bin/python -c "import google.auth.transport.requests, boto3"
 
   binary:
+    # Kept on GitHub-hosted: the smoke test runs the strix binary, which needs Docker,
+    # and the public self-hosted runner has no Docker.
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4.4.0

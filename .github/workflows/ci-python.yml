@@ -8,7 +8,7 @@ permissions:
 
 jobs:
   lock:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, jerco-public, linode]
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4.4.0
         with:
@@ -17,7 +17,7 @@ jobs:
       - run: uv lock --check
 
   ruff:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, jerco-public, linode]
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4.4.0
         with:
@@ -27,7 +27,7 @@ jobs:
       - run: uv run --frozen ruff format --check .
 
   mypy:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, jerco-public, linode]
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4.4.0
         with:
@@ -36,7 +36,7 @@ jobs:
       - run: uv run --frozen mypy strix/
 
   bandit:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, jerco-public, linode]
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4.4.0
         with:
@@ -46,7 +46,16 @@ jobs:
 
   pytest:
     name: pytest (${{ matrix.python-version }})
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, jerco-public, linode]
+    timeout-minutes: 30
+    env:
+      # Use LiteLLM's bundled price map instead of fetching the live one from GitHub at
+      # import time. The live map now has a unique `github_copilot/claude-sonnet-4.6`
+      # entry, so cost estimation in tests/test_tool_call_ids_providers.py resolves
+      # `openrouter/anthropic/claude-sonnet-4.6` to the Copilot provider. LiteLLM then
+      # starts an interactive GitHub device login and the job hangs (same on upstream
+      # GitHub-hosted CI). The bundled map keeps tests deterministic and offline.
+      LITELLM_LOCAL_MODEL_COST_MAP: "True"
     strategy:
       fail-fast: false
       matrix:

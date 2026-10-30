@@ -8,7 +8,7 @@ permissions:
 
 jobs:
   go:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, jerco-public, linode]
     defaults:
       run:
         working-directory: strix/interface/tui
