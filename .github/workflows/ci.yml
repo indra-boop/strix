@@ -39,7 +39,7 @@ jobs:
       - viewer
       - package
       - workflows
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, jerco-public, linode]
     steps:
       - name: Every job succeeded
         env:

@@ -8,7 +8,7 @@ permissions:
 
 jobs:
   wheel:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, jerco-public, linode]
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4.4.0
         with:
@@ -42,7 +42,7 @@ jobs:
         run: /tmp/strix-smoke/bin/python -c "import google.auth.transport.requests, boto3"
 
   binary:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, jerco-public, linode]
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4.4.0
         with:
