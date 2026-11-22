@@ -1,0 +1,55 @@
+# Label path untuk PR router gratis (.github/workflows/pr-router.yml).
+# Labeler tidak pernah menjalankan kode PR; file ini hanya konfigurasi pencocokan path.
+
+frontend:
+  - changed-files:
+      - any-glob-to-any-file:
+          - strix/interface/viewer/**
+
+backend:
+  - changed-files:
+      - any-glob-to-any-file:
+          - strix/**
+
+governance:
+  - changed-files:
+      - any-glob-to-any-file:
+          - AGENTS.md
+          - skills/**
+
+deploy:
+  - changed-files:
+      - any-glob-to-any-file:
+          - containers/**
+          - "**/Dockerfile"
+          - strix.spec
+
+scripts:
+  - changed-files:
+      - any-glob-to-any-file:
+          - scripts/**
+
+tests:
+  - changed-files:
+      - any-glob-to-any-file:
+          - tests/**
+          - benchmarks/**
+
+deps:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/package.json"
+          - "**/package-lock.json"
+          - "**/pyproject.toml"
+          - "**/uv.lock"
+
+docs:
+  - changed-files:
+      - any-glob-to-any-file:
+          - docs/**
+          - "**/*.md"
+
+ci:
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".github/**"
